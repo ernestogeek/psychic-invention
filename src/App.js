@@ -1,11 +1,10 @@
 import './App.css';
+import { MazeGeneration } from './Components/MazeGeneration';
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <h1>Hola Mundo</h1>
-      </header>
+        <MazeGeneration/>
     </div>
   );
 }
