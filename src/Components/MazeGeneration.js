@@ -3,18 +3,13 @@ import { Cell } from './Cell'
 import {CellCheese} from './CellCheese'
 import {CellRat} from './CellRat'
 import {CellRed} from './CellRed'
+import { counter } from "./MazeGenerator.js"
+
 
 
  export const MazeGeneration = () => {
 
-const arr=[
-    [0,0,0,1,0,0],
-    [1,0,0,0,0,1],
-    [0,1,0,1,0,0],
-    [1,0,1,0,0,1],
-    [1,1,0,0,0,1],
-    [0,1,1,0,0,0]
-  ];
+const arr= counter();
 
  function isSafe(arr, x, y) {
   const m = arr.length;

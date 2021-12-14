@@ -9,6 +9,14 @@
   border: 3px solid #000;
   margin: 0;
 }
+
+.cheese{
+  margin-top: 1.5vh;
+  margin-left: 2.5vh;
+  background-color: transparent;
+  height:auto;
+  width:3vw;
+}
 .total{
  margin-top: 5%;
   align-items: center;
@@ -20,9 +28,11 @@
   flex-direction: row;
 }
 .rat{
-  margin-top: 2vh;
-  height:4vh;
-  width:5vw;
+  margin-top: 1vh;
+  margin-left: 1vh;
+  background-color: transparent;
+  height:auto;
+  width:3vw;
 }
 .ob{
   background-color: red;

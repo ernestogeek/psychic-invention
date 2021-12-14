@@ -5,7 +5,7 @@ import { faCheese } from '@fortawesome/free-solid-svg-icons'
 export const CellCheese = ({row,col}) => {
     return (
         <div className="square" id={`${row}-${col}`}>
-             <FontAwesomeIcon icon={faCheese} size="2x"/>
+             <FontAwesomeIcon icon={faCheese} color="gray" size="2x" className="cheese"/>
         </div>
     )
 }
