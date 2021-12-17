@@ -6,8 +6,7 @@ import {CellRed} from './CellRed'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
  export const MazeGeneration = () => {
-  //generate double array of randomized Depth First Search maze
-  const [maze, setMaze] = useState(generateMaze(10, 10))
+  const [maze, setMaze] = useState(generateMaze(11, 11))
   //generate maze function
   function generateMaze(rows, cols) {
     let maze = []
