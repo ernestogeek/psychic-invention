@@ -3,13 +3,86 @@ import { Cell } from './Cell'
 import {CellCheese} from './CellCheese'
 import {CellRat} from './CellRat'
 import {CellRed} from './CellRed'
-import { counter } from "./MazeGenerator.js"
-
-
+import 'bootstrap/dist/css/bootstrap.min.css';
 
  export const MazeGeneration = () => {
+  //generate double array of randomized Depth First Search maze
+  const [maze, setMaze] = useState(generateMaze(10, 10))
 
-const arr= counter();
+  //generate maze function
+  function generateMaze(rows, cols) {
+    let maze = []
+    for (let row = 0; row < rows; row++) {
+      let rowArr = []
+      for (let col = 0; col < cols; col++) {
+        rowArr.push(0)
+      }
+      maze.push(rowArr)
+    }
+    for (let row = 0; row < 2; row++) {
+      for (let col = 0; col < 2; col++) {
+        let start = {
+          row: Math.floor(Math.random() * rows),
+          col: Math.floor(Math.random() * cols),
+        }
+        maze[start.row][start.col] = 1
+        let end = {
+          row: Math.floor(Math.random() * rows),
+          col: Math.floor(Math.random() * cols),
+        }
+        maze[end.row][end.col] = 1
+        let rat = {
+          row: Math.floor(Math.random() * rows),
+          col: Math.floor(Math.random() * cols),
+        }
+        maze[rat.row][rat.col] = 1
+        let cheese = {
+          row: Math.floor(Math.random() * rows),
+          col: Math.floor(Math.random() * cols),
+        }
+        maze[cheese.row][cheese.col] = 1
+        let red = {
+          row: Math.floor(Math.random() * rows),
+          col: Math.floor(Math.random() * cols),
+        }
+        maze[red.row][red.col] = 1
+      }
+    }
+    // let start = {
+    //   row: Math.floor(Math.random() * rows),
+    //   col: Math.floor(Math.random() * cols),
+    // }
+    // maze[start.row][start.col] = 1
+    // let end = {
+    //   row: Math.floor(Math.random() * rows),
+    //   col: Math.floor(Math.random() * cols),
+    // }
+    // maze[end.row][end.col] = 1
+    // let rat = {
+    //   row: Math.floor(Math.random() * rows),
+    //   col: Math.floor(Math.random() * cols),
+    // }
+    // maze[rat.row][rat.col] = 1
+    // let cheese = {
+    //   row: Math.floor(Math.random() * rows),
+    //   col: Math.floor(Math.random() * cols),
+    // }
+    // maze[cheese.row][cheese.col] = 1
+    // let red = {
+    //   row: Math.floor(Math.random() * rows),
+    //   col: Math.floor(Math.random() * cols),
+    // }
+    // maze[red.row][red.col] = 1
+    return maze
+  }
+
+
+
+  const arr=maze
+  arr[0][0]=0;
+
+  console.log(arr)
+
 
  function isSafe(arr, x, y) {
   const m = arr.length;
@@ -58,10 +131,12 @@ function solveMazeUtil(maze, x, y, sol) {
   
    }
     return (
+
         <div className="total">
+          <h1>Maze Rat Solver</h1>
               {arr.map((row,i)=>{
                     return(
-                        <div className="row" key={i}>
+                        <div className="cell" key={i}>
                             {row.map((col,j)=>{
                                 return(
                                     <div className="" key={j}>
@@ -73,7 +148,7 @@ function solveMazeUtil(maze, x, y, sol) {
                         </div>
                     )
               })}
-        <button onClick={back} className="btn">Find path</button>
+        <button onClick={back} className="btn btn-primary mt-5">Find path</button>
         </div>
     )
 }
