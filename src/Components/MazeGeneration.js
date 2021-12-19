@@ -1,129 +1,271 @@
-import React,{useState} from 'react'
-import { Cell } from './Cell'
-import {CellCheese} from './CellCheese'
-import {CellRat} from './CellRat'
-import {CellRed} from './CellRed'
-import 'bootstrap/dist/css/bootstrap.min.css';
+import React, {useState} from "react";
+import {Cell} from "./Cell";
+import {CellCheese} from "./CellCheese";
+import {CellRat} from "./CellRat";
+import {CellRed} from "./CellRed";
+import "bootstrap/dist/css/bootstrap.min.css";
+export const MazeGeneration = () => {
+   const [number1, setNumber1] = useState(10);
+   const [number2, setNumber2] = useState(10);
+   const [dificult, setDificult] = useState(1);
+   const [green, setGreen] = useState([]);
+   const [TimeIterative, setTimeIterative] = useState(0);
+   const [TimeRecursive, setTimeRecursive] = useState(0);
+   const [TimeSolve, setTimeSolve] = useState(0);
+   const [maze, setMaze] = useState(generateMaze(number1, number2));
 
- export const MazeGeneration = () => {
-  const [maze, setMaze] = useState(generateMaze(11, 11))
-  //generate maze function
-  function generateMaze(rows, cols) {
-    let maze = []
-    for (let row = 0; row < rows; row++) {
-      let rowArr = []
-      for (let col = 0; col < cols; col++) {
-        rowArr.push(0)
+   function generateMaze(rows, cols) {
+      let maze = [];
+      for (let row = 0; row < rows; row++) {
+         let rowArr = [];
+         for (let col = 0; col < cols; col++) {
+            rowArr.push(0);
+         }
+         maze.push(rowArr);
       }
-      maze.push(rowArr)
-    }
-    //Aumentar dificultad al laberinto
-    for (let row = 0; row < 2; row++) {
-      for (let col = 0; col < 2; col++) {
-        let start = {
-          row: Math.floor(Math.random() * rows),
-          col: Math.floor(Math.random() * cols),
-        }
-        maze[start.row][start.col] = 1
-        let end = {
-          row: Math.floor(Math.random() * rows),
-          col: Math.floor(Math.random() * cols),
-        }
-        maze[end.row][end.col] = 1
-        let rat = {
-          row: Math.floor(Math.random() * rows),
-          col: Math.floor(Math.random() * cols),
-        }
-        maze[rat.row][rat.col] = 1
-        let cheese = {
-          row: Math.floor(Math.random() * rows),
-          col: Math.floor(Math.random() * cols),
-        }
-        maze[cheese.row][cheese.col] = 1
-        let red = {
-          row: Math.floor(Math.random() * rows),
-          col: Math.floor(Math.random() * cols),
-        }
-        maze[red.row][red.col] = 1
+      //Aumentar dificultad al laberinto
+      for (let row = 0; row < dificult; row++) {
+         let start = {
+            row: Math.floor(Math.random() * rows),
+            col: Math.floor(Math.random() * cols),
+         };
+         maze[start.row][start.col] = 1;
+         let end = {
+            row: Math.floor(Math.random() * rows),
+            col: Math.floor(Math.random() * cols),
+         };
+         maze[end.row][end.col] = 1;
+         let rat = {
+            row: Math.floor(Math.random() * rows),
+            col: Math.floor(Math.random() * cols),
+         };
+         maze[rat.row][rat.col] = 1;
+         let cheese = {
+            row: Math.floor(Math.random() * rows),
+            col: Math.floor(Math.random() * cols),
+         };
+         maze[cheese.row][cheese.col] = 1;
+         let red = {
+            row: Math.floor(Math.random() * rows),
+            col: Math.floor(Math.random() * cols),
+         };
+         maze[red.row][red.col] = 1;
       }
-    }
-    return maze
-  }
 
+      return maze;
+   }
 
+   const arr = maze;
+   arr[0][0] = 0;
+   arr[arr.length - 1][arr.length - 1] = 0;
 
-  const arr=maze
-  arr[0][0]=0;
-  arr[arr.length-1][arr.length-1]=0;
+   //  console.log(arr);
 
-  console.log(arr)
+   function isSafe(arr, x, y) {
+      const m = arr.length;
+      const n = arr[0].length;
+      if (x >= 0 && x < m && y >= 0 && y < n && arr[x][y] === 0) {
+         return true;
+      }
+      return false;
+   }
+   function solveMazeUtil(maze, x, y, sol) {
+      const m = maze.length;
+      const n = maze[0].length;
+      if (x === m - 1 && y === n - 1) {
+         sol[x][y] = 1;
+         return true;
+      }
+      if (isSafe(maze, x, y)) {
+         sol[x][y] = 1;
+         if (solveMazeUtil(maze, x + 1, y, sol)) return true;
+         if (solveMazeUtil(maze, x, y + 1, sol)) return true;
+         sol[x][y] = 0;
+         return false;
+      }
+      return false;
+   }
+   function generateMazeRecursively(rows, cols) {
+      let maze = [];
+      for (let row = 0; row < rows; row++) {
+         let rowArr = [];
+         for (let col = 0; col < cols; col++) {
+            rowArr.push(0);
+         }
+         maze.push(rowArr);
+      }
+      let user = {value: dificult};
+      let oldMessages = user;
 
+      return IncrementDificult(oldMessages.value, rows, maze);
+   }
 
- function isSafe(arr, x, y) {
-  const m = arr.length;
-  const n=arr[0].length;
-  if (x >= 0 && x < m && y >= 0 && y < n && arr[x][y] === 0) {
-    return true;
-  }
-  return false;
-}
-function solveMazeUtil(maze, x, y, sol) {
-  const m = maze.length;
-  const n=maze[0].length;
-  if (x === m- 1 && y === n - 1) {
-    sol[x][y] = 1;
-    return true;
-  }
-  if (isSafe(maze, x, y)) {
-    sol[x][y] = 1;
-    if (solveMazeUtil(maze, x + 1, y, sol)) return true;
-    if (solveMazeUtil(maze, x, y + 1, sol)) return true;
-    sol[x][y] = 0;
-    return false;
-  }
-  return false;
-}
+   function IncrementDificult(dificult, size, maze) {
+      if (dificult === 0) {
+         console.log(maze);
+         return maze;
+      } else {
+         let start = {
+            row: Math.floor(Math.random() * size),
+            col: Math.floor(Math.random() * size),
+         };
+         maze[start.row][start.col] = 1;
+         let end = {
+            row: Math.floor(Math.random() * size),
+            col: Math.floor(Math.random() * size),
+         };
+         maze[end.row][end.col] = 1;
+         let rat = {
+            row: Math.floor(Math.random() * size),
+            col: Math.floor(Math.random() * size),
+         };
+         maze[rat.row][rat.col] = 1;
+         let cheese = {
+            row: Math.floor(Math.random() * size),
+            col: Math.floor(Math.random() * size),
+         };
+         maze[cheese.row][cheese.col] = 1;
+         let red = {
+            row: Math.floor(Math.random() * size),
+            col: Math.floor(Math.random() * size),
+         };
+         maze[red.row][red.col] = 1;
+         return IncrementDificult(dificult - 1, size, maze);
+      }
+   }
 
+   const back = () => {
+      var startTime = performance.now();
 
-  const back=()=>{
-    const m=arr.length;
-    const n=arr[0].length;
-  
+      const m = arr.length;
+      const n = arr[0].length;
       var sol = new Array(m);
       let idx = 0;
       for (idx = 0; idx < m; idx++) {
-        sol[idx] = new Array(n).fill(0);
+         sol[idx] = new Array(n).fill(0);
       }
-    if(solveMazeUtil(arr,0,0,sol)){
-      for( let i=0;i<m;i++){
-        for(let j=0;j<n;j++){
-          if(sol[i][j]===1){
-            document.getElementById(`${i}-${j}`).style.backgroundColor="green";
-          }
-        }
+      if (solveMazeUtil(arr, 0, 0, sol)) {
+         for (let i = 0; i < m; i++) {
+            for (let j = 0; j < n; j++) {
+               if (sol[i][j] === 1) {
+                  const newList = green.push({row: i, col: j});
+                  setGreen([...green, newList]);
+                  document.getElementById(`${i}-${j}`).style.backgroundColor = "green";
+               }
+            }
+         }
       }
-    }
-  
-   }
-    return (
+      var endTime = performance.now();
+      setTimeSolve(endTime - startTime);
+   };
+   const cleanColors = () => {
+      console.log(green.length);
+      for (let i = 0; i < green.length; i++) {
+         if (green[i].row === undefined && green[i].col === undefined) {
+         } else {
+            document.getElementById(`${green[i].row}-${green[i].col}`).style.backgroundColor = "transparent";
+         }
+      }
+   };
 
-        <div className="total">
-          <h1>Maze Rat Solver</h1>
-              {arr.map((row,i)=>{
-                    return(
-                        <div className="cell" key={i}>
-                            {row.map((col,j)=>{
-                                return(
-                                    <div className="" key={j}>
-                                        { i===(arr.length-1) && j === (arr.length-1)? <CellCheese row={i} col={j}/>: i===0 && j === 0? <CellRat row={i} col={j}/> :col === 0 ? <Cell row={i} col={j}/> : col === 1 ? <CellRed row={i} col={j}/> : <h1>Hola</h1> } 
-                                    </div>
-                                )
-                            })}
-                            <br/>
+   const onChange = (e) => {
+      setNumber1(parseInt(e.target.value));
+      setNumber2(parseInt(e.target.value));
+   };
+   const onChange2 = (e) => {
+      setNumber2(parseInt(e.target.value));
+      setNumber1(parseInt(e.target.value));
+   };
+   const setRange = (e) => {
+      setDificult(Math.floor(parseInt(e.target.value)));
+   };
+   const getNewMazeIteratively = () => {
+      var startTime = performance.now();
+      cleanColors();
+      setMaze(generateMaze(number1, number2));
+      setGreen([]);
+      var endTime = performance.now();
+      setTimeIterative(endTime - startTime);
+   };
+   const getNewMazeRecursively = () => {
+      var startTime = performance.now();
+      cleanColors();
+      setMaze(generateMazeRecursively(number1, number2));
+      setGreen([]);
+      var endTime = performance.now();
+      setTimeRecursive(endTime - startTime);
+   };
+   return (
+      <div className="total mb-5">
+         <div className="d-flex  justify-content-center">
+            <div className="container">
+               <h1>Maze Rat Solver</h1>
+
+               <div className="row">
+                  <div className="col-md-5">
+                     <label>Width</label>
+                     <input type="number" className="form-control" value={number1} onChange={onChange} />
+                  </div>
+                  <div className="col-md-5">
+                     <label>Height</label>
+                     <input type="number" className="form-control" value={number2} onChange={onChange2} />
+                  </div>
+               </div>
+               <div className="row">
+                  <div className="col-md-10">
+                     <label>Dificult {dificult}</label>
+                     <input type="range" className="form-range" max="100" min="1" value={dificult} onChange={setRange} />
+                  </div>
+               </div>
+               <div className="row">
+                  <div className="col-md-5 d-grid gap-2">
+                     <button onClick={back} className="btn btn-primary mt-1 mb-1 ">
+                        Solve
+                     </button>
+                  </div>
+                  <div className="col-md-5 d-grid gap-2">
+                     <button onClick={getNewMazeIteratively} className="btn btn-primary mt-1 mb-1 ">
+                        Generate Iteratively
+                     </button>
+                  </div>
+                  <div className="col-md-5 d-grid gap-2">
+                     <button onClick={getNewMazeRecursively} className="btn btn-primary mt-1 mb-1 ">
+                        Generate Recursively
+                     </button>
+                  </div>
+                  <div className="col-md-5 d-grid gap-2">
+                     <label>Tiempo Iterativo: {TimeIterative}</label>
+                     <label>Tiempo Recursivo: {TimeRecursive}</label>
+                     <label>Tiempo Para Resolver: {TimeSolve}</label>
+                  </div>
+               </div>
+            </div>
+         </div>
+
+         {arr.map((row, i) => {
+            return (
+               <div className="cell" key={i}>
+                  {row.map((col, j) => {
+                     return (
+                        <div className="" key={j}>
+                           {i === arr.length - 1 && j === arr.length - 1 ? (
+                              <CellCheese row={i} col={j} />
+                           ) : i === 0 && j === 0 ? (
+                              <CellRat row={i} col={j} />
+                           ) : col === 0 ? (
+                              <Cell row={i} col={j} />
+                           ) : col === 1 ? (
+                              <CellRed row={i} col={j} />
+                           ) : (
+                              <h1>Hola</h1>
+                           )}
                         </div>
-                    )
-              })}
-        <button onClick={back} className="btn btn-primary mt-5">Find path</button>
-        </div>
-    )
-}
+                     );
+                  })}
+                  <br />
+               </div>
+            );
+         })}
+      </div>
+   );
+};

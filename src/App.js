@@ -1,13 +1,9 @@
-import './App.css';
-import { MazeGeneration } from './Components/MazeGeneration';
-import React, { Component }  from 'react';
+import "./App.css";
+import {MazeGeneration} from "./Components/MazeGeneration";
+import React, {Component} from "react";
 
 function App() {
-  return (
-    <div className="App">
-        <MazeGeneration/>
-    </div>
-  );
+   return <MazeGeneration />;
 }
 
 export default App;
