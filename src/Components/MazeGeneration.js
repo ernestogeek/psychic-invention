@@ -5,14 +5,18 @@ import {CellRat} from "./CellRat";
 import {CellRed} from "./CellRed";
 import "bootstrap/dist/css/bootstrap.min.css";
 export const MazeGeneration = () => {
-   const [number1, setNumber1] = useState(10);
-   const [number2, setNumber2] = useState(10);
-   const [dificult, setDificult] = useState(1);
+   const [number1, setNumber1] = useState(5);
+   const [number2, setNumber2] = useState(5);
+   const [dificult, setDificult] = useState(2);
    const [green, setGreen] = useState([]);
    const [TimeIterative, setTimeIterative] = useState(0);
    const [TimeRecursive, setTimeRecursive] = useState(0);
    const [TimeSolve, setTimeSolve] = useState(0);
    const [maze, setMaze] = useState(generateMaze(number1, number2));
+
+   //generate prim's algorithm to solve maze
+
+   console.log(maze);
 
    function generateMaze(rows, cols) {
       let maze = [];
