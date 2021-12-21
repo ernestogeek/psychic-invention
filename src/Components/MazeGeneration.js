@@ -12,11 +12,74 @@ export const MazeGeneration = () => {
    const [TimeIterative, setTimeIterative] = useState(0);
    const [TimeRecursive, setTimeRecursive] = useState(0);
    const [TimeSolve, setTimeSolve] = useState(0);
+   const [TimeSolvePrim, setTimeSolvePrim] = useState(0);
    const [maze, setMaze] = useState(generateMaze(number1, number2));
 
-   //generate prim's algorithm to solve maze
+   const arr = maze;
+   arr[0][0] = 0;
+   arr[arr.length - 1][arr.length - 1] = 0;
+   //Convert double array to graph with nodes and edges and weight random
+   const mazeToGraph = (maze) => {
+      let graph = {};
+      for (let i = 0; i < maze.length; i++) {
+         for (let j = 0; j < maze[i].length; j++) {
+            if (maze[i][j] === 0) {
+               graph[i + "," + j] = {};
+               if (maze[i - 1] && maze[i - 1][j] === 0) {
+                  graph[i + "," + j][i - 1 + "," + j] = Math.floor(Math.random() * (3 - 1 + 1) + 1);
+               }
+               if (maze[i + 1] && maze[i + 1][j] === 0) {
+                  graph[i + "," + j][i + 1 + "," + j] = Math.floor(Math.random() * (3 - 1 + 1) + 1);
+               }
+               if (maze[i][j - 1] === 0) {
+                  graph[i + "," + j][i + "," + (j - 1)] = Math.floor(Math.random() * (3 - 1 + 1) + 1);
+               }
+               if (maze[i][j + 1] === 0) {
+                  graph[i + "," + j][i + "," + (j + 1)] = Math.floor(Math.random() * (3 - 1 + 1) + 1);
+               }
+            }
+         }
+      }
+      return graph;
+   };
 
-   console.log(maze);
+   const dfsRecursive = (graph, start, end, visited = {}) => {
+      let path = [];
+      if (start === end) {
+         path.push(end);
+         return path;
+      }
+      visited[start] = true;
+      for (let neighbor in graph[start]) {
+         if (!visited[neighbor]) {
+            let newPath = dfsRecursive(graph, neighbor, end, visited);
+            if (newPath.length > 0) {
+               path.push(start);
+               path.push(...newPath);
+               return path;
+            }
+         }
+      }
+      return path;
+   };
+   const drawPath = (result_arr) => {
+      for (let i = 0; i < result_arr.length; i++) {
+         let x = result_arr[i].split(",")[0];
+         let y = result_arr[i].split(",")[1];
+         const newList = green.push({row: x, col: y});
+         setGreen([...green, newList]);
+         document.getElementById(`${x}-${y}`).style.backgroundColor = "green";
+      }
+   };
+
+   const solvePrim = () => {
+      var startTime = performance.now();
+      let result = mazeToGraph(maze);
+      let result_arr = dfsRecursive(result, "0,0", arr.length - 1 + "," + (arr.length - 1));
+      drawPath(result_arr);
+      var endTime = performance.now();
+      setTimeSolvePrim(endTime - startTime);
+   };
 
    function generateMaze(rows, cols) {
       let maze = [];
@@ -58,12 +121,6 @@ export const MazeGeneration = () => {
 
       return maze;
    }
-
-   const arr = maze;
-   arr[0][0] = 0;
-   arr[arr.length - 1][arr.length - 1] = 0;
-
-   //  console.log(arr);
 
    function isSafe(arr, x, y) {
       const m = arr.length;
@@ -228,6 +285,11 @@ export const MazeGeneration = () => {
                      </button>
                   </div>
                   <div className="col-md-5 d-grid gap-2">
+                     <button onClick={solvePrim} className="btn btn-primary mt-1 mb-1 ">
+                        Solve Prim's
+                     </button>
+                  </div>
+                  <div className="col-md-5 d-grid gap-2">
                      <button onClick={getNewMazeIteratively} className="btn btn-primary mt-1 mb-1 ">
                         Generate Iteratively
                      </button>
@@ -238,9 +300,15 @@ export const MazeGeneration = () => {
                      </button>
                   </div>
                   <div className="col-md-5 d-grid gap-2">
+                     <button onClick={cleanColors} className="btn btn-primary mt-1 mb-1 ">
+                        Clear
+                     </button>
+                  </div>
+                  <div className="col-md-5 d-grid gap-2">
                      <label>Tiempo Iterativo: {TimeIterative}</label>
                      <label>Tiempo Recursivo: {TimeRecursive}</label>
                      <label>Tiempo Para Resolver: {TimeSolve}</label>
+                     <label>Tiempo Para Resolver Prim: {TimeSolvePrim}</label>
                   </div>
                </div>
             </div>
