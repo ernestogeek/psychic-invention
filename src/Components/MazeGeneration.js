@@ -18,7 +18,6 @@ export const MazeGeneration = () => {
    const arr = maze;
    arr[0][0] = 0;
    arr[arr.length - 1][arr.length - 1] = 0;
-   //Convert double array to graph with nodes and edges and weight random
    const mazeToGraph = (maze) => {
       let graph = {};
       for (let i = 0; i < maze.length; i++) {
@@ -197,7 +196,6 @@ export const MazeGeneration = () => {
 
    const back = () => {
       var startTime = performance.now();
-
       const m = arr.length;
       const n = arr[0].length;
       var sol = new Array(m);
