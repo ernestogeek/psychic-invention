@@ -1,6 +1,6 @@
-# Getting Started with Create React App
+# Psychic Engagmenet
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This is research project to reveal psychological information on developers.
 
 ## Available Scripts
 
