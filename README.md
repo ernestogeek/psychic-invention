@@ -1,4 +1,4 @@
-# Psychic Engagmenet
+# Psychic Engagement
 
 This is research project to reveal psychological information on developers.
 
